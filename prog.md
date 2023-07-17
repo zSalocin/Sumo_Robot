@@ -1,46 +1,79 @@
+#include "Ultrasonic.h"
+
 #define BorderSensor_1 3
 #define BorderSensor_2 4
 #define BorderSensor_3 5
 #define BorderSensor_4 6
-#define SensorPrincipal_Ult 7
-#define Motor_1 8
-#define Motor_2 9
-#define Start 10
+#define UltrasonicSensor_echo 7
+#define UltrasonicSensor_trigger 8
+#define Motor_1_1 9
+#define Motor_1_2 10
+#define Motor_2_1 11
+#define Motor_2_2 12
+#define Start 13
+#define Radius 30
+
+Ultrasonic ultasonic(trigPin, echoPin);//Remover junto com a biblioteca e implementar se possivel, para tornar mas rapido
 
 void setup(){
-    serial.Begin(9600);
-    pinMode(Start, INPUT)
+    Serial.begin(9600);
+    pinMode(Start, INPUT);
     pinMode(BorderSensor_1, INPUT);
     pinMode(BorderSensor_2, INPUT);
     pinMode(BorderSensor_3, INPUT);
     pinMode(BorderSensor_4, INPUT);
-    pinMode(SensorPrincipal_Ult, INPUT);
-    pinMode(Motor_1, OUTPUT);
-    pinMode(Motor_2, OUTPUT);
+    pinMode(UltrasonicSensor_echo, INPUT);
+    pinMode(UltrasonicSensor_trigger, OUTPUT);
+    pinMode(Motor_1_1, OUTPUT);
+    pinMode(Motor_1_2, OUTPUT);
+    pinMode(Motor_2_1, OUTPUT);
+    pinMode(Motor_2_2, OUTPUT);
 }
 
-void girar(){
-    //TODO função de girar
+void motorControl(bool n,bool a, bool b){//Motor n sendo 1 motor 2, 0 motor 1 e o input 1 e 2 da ponte H respectivamente
+    if(n){
+        if(a)
+            digitalWrite(Motor_2_1, 1);
+        else
+            digitalWrite(Motor_2_1, 0);
+        if(b)
+            digitalWrite(Motor_2_2, 1);
+        else
+            digitalWrite(Motor_2_2, 0);
+    }else{
+                if(a)
+            digitalWrite(Motor_1_1, 1);
+        else
+            digitalWrite(Motor_1_1, 0);
+        if(b)
+            digitalWrite(Motor_1_2, 1);
+        else
+            digitalWrite(Motor_1_2, 0);
+    }
+}
+
+int ultrasonicSensor(){
+    digitalWrite(UltrasonicSensor_trigger, 0);
+    delayMicroseconds(2);
+    digitalWrite(UltrasonicSensor_trigger, 1);
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+    return ultrasonic.Ranging(CM);//Remover junto com a biblioteca e implementar se possivel, para tornar mas rapido
+}
+
+void fieldLimit(){
+     //TODO
+}
+
+int locateTarget(){
+    //TODO
+}//Localizar inimigo, necessario dados sobre o giroscopio
+
+int debugMode(){
+    //TODO
 }
 
 void loop(){
-    do{
-        analogWrite(Motor_1, 0);
-        analogWrite(Motor_2, 0);
-    }while(digitalRead(Start));
-
-    if(digitalRead(BorderSensor_1)){}
-    if(digitalRead(BorderSensor_2)){}
-    if(digitalRead(BorderSensor_3)){}
-    if(digitalRead(BorderSensor_4)){}
-
-    if(analogRead(SensorPrincipal_Ult)<=???){
-        //TODO ataque frontal
-    }elif(){
-        //TODO ataque lateral
-    }elif{
-        //TODO ataque traseiro
-    }else{
-        //TODO busca
-    }
+//TODO
 }
