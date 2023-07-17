@@ -1,5 +1,3 @@
-#include "Ultrasonic.h"
-
 #define BorderSensor_1 3
 #define BorderSensor_2 4
 #define BorderSensor_3 5
@@ -12,8 +10,8 @@
 #define Motor_2_2 12
 #define Start 13
 #define Radius 30
-
-Ultrasonic ultasonic(trigPin, echoPin);//Remover junto com a biblioteca e implementar se possivel, para tornar mas rapido
+#define min_Distance 10
+#define max_Distance 50
 
 void setup(){
     Serial.begin(9600);
@@ -56,24 +54,58 @@ int ultrasonicSensor(){
     digitalWrite(UltrasonicSensor_trigger, 0);
     delayMicroseconds(2);
     digitalWrite(UltrasonicSensor_trigger, 1);
-    digitalWrite(trigPin, HIGH);
     delayMicroseconds(10);
-    digitalWrite(trigPin, LOW);
-    return ultrasonic.Ranging(CM);//Remover junto com a biblioteca e implementar se possivel, para tornar mas rapido
+    digitalWrite(UltrasonicSensor_trigger, 0);
+    return pulseIn(UltrasonicSensor_echo, 1)/29 / 2 ;
 }
 
 void fieldLimit(){
-     //TODO
+    if(digitalRead(BorderSensor_1)){}//direita frente
+    if(digitalRead(BorderSensor_2)){}//esquerda frene
+    if(digitalRead(BorderSensor_3)){}//direitra traseira
+    if(digitalRead(BorderSensor_4)){}//esquerda traseira
 }
 
 int locateTarget(){
-    //TODO
+    int distance = ultrasonicSensor();
+    if(distance <= max_Distance)
+        return distance;
+    else{
+        //girar 30 para um lado depois para o outro, ver giroscopio para implementar
+    }
 }//Localizar inimigo, necessario dados sobre o giroscopio
 
 int debugMode(){
-    //TODO
+    if(ultrasonicSensor()!=0)
+        Serial.println("Ultrasonic_Sensor: OK");
+        Serial.println("Start Motors Test");
+        Serial.println("Try to go forward");
+        motorControl(1,0,1);
+        motorControl(0,0,1);
+        delay(2000);
+        Serial.println("Try to go backward");
+        motorControl(1,1,0);
+        motorControl(0,1,0);
+        delay(2000);
+        Serial.println("Try to turn right");
+        motorControl(1,0,1);
+        motorControl(0,1,0);
+        delay(2000);
+        Serial.println("Try to turn left");
+        motorControl(1,1,0);
+        motorControl(0,0,1);
+        delay(2000);
+        Serial.println("Try to shutdown the motors");
+        motorControl(1,0,0);
+        motorControl(0,0,0);
 }
 
+void atk_1(){}
+
+void atk_2(){}
+
+void atk_3(){}
+
 void loop(){
-//TODO
+debugMode();
 }
